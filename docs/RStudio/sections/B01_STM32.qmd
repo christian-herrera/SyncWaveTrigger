@@ -1,0 +1,15 @@
+---
+title: "STM32"
+---
+
+# Configuracion de los Pines GPIO
+
+Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido como "BluePill". Esto fue asi porque el mismo es capaz de correr el clock a 72MHz.
+
+La configuracion de los pines es la siguiente:
+
+![](/images/stm32_pinout.png){fig-align="center" width="50%"}
+
+# Configuracion de los Relojs
+
+![](/images/stm32_clocks.png){fig-align="center" width="80%"}

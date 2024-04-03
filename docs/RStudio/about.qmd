@@ -1,0 +1,18 @@
+---
+title: "Acerca"
+image: images/about_image.jpg
+about:
+  template: jolla
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/christian-herrera/WaveSyncTrigger
+---
+
+[Integrantes del Grupo:]{.underline}
+
+*Herrera, Christian Yoel*
+
+*Iriart, Ignacio Agustin*
+
+*Torres, Adrian Edimerk*

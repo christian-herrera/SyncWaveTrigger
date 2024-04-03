@@ -1,0 +1,9 @@
+../Core/Inc/LCD/LCD.c:52:6:LCD_Init	8	static
+../Core/Inc/LCD/LCD.c:86:6:LCD_Clear	8	static
+../Core/Inc/LCD/LCD.c:92:6:LCD_setCursor	24	static
+../Core/Inc/LCD/LCD.c:100:6:LCD_printChar	16	static
+../Core/Inc/LCD/LCD.c:106:6:LCD_printString	16	static
+../Core/Inc/LCD/LCD.c:114:6:LCD_printInt	16	static
+../Core/Inc/LCD/LCD.c:119:6:LCD_printFloat	16	static
+../Core/Inc/LCD/LCD.c:132:13:LCD_Send	16	static
+../Core/Inc/LCD/LCD.c:146:13:LCD_sendNibble	16	static

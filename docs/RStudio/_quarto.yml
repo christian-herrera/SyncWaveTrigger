@@ -1,0 +1,47 @@
+project:
+  type: website
+  output-dir: ../.
+
+website:
+  title: "WaveSyncTrigger"
+  page-navigation: true
+  back-to-top-navigation: true
+  navbar:
+    search: true
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+    tools:
+      - icon: github
+        url: https://github.com/christian-herrera/wavesynctrigger
+  sidebar:
+    #style: "floating"
+    style: "docked"
+    background: light
+    contents:
+      - section: "**Introduccion**"
+        contents:
+          - sections/A01_Introduccion.qmd
+          - sections/A02_Requisitos.qmd
+      - text: "---"
+      - section: "**Electronica**"
+        contents:
+          - sections/B01_STM32.qmd
+          - sections/B02_Elect_Potencia.qmd
+
+
+format:
+  html:
+    theme: yeti    
+    css: styles.css
+    toc: true
+    lang: es
+    grid:
+      sidebar-width: 300px
+      body-width: 1400px
+      margin-width: 350px
+      gutter-width: 1.5rem
+
+editor: visual
+

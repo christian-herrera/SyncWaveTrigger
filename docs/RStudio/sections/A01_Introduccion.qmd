@@ -1,0 +1,5 @@
+---
+title: "Introduccion"
+---
+
+El proyecto titulado como *SyncWaveTrigger* 

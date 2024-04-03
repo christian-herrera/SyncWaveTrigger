@@ -1,0 +1,11 @@
+---
+title: "Etapa de Potencia"
+---
+
+# Etapa de Adquisicion
+
+El microcontrolador STM32 hace uso de una señal que es proporcional a la sinusoide de tension de 220Vrms. El circuito que transforma esta sinusoide en una señal cuadrada TTL es el siguiente:
+
+![](/images/etapa_adquisicion.png){fig-align="center" width="50%"}
+
+Esta etapa requiere de tres resistencias de $150k\Omega$. Valor necesario para limitar la caida de tension que cae en el optoacoplador. La salida del mismo sera simplemente un pulso TTL conectado directo al pin del microcontrolador, tal como se ve en la imagen.

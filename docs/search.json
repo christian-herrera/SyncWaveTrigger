@@ -1,0 +1,64 @@
+[
+  {
+    "objectID": "sections/B02_Elect_Potencia.html",
+    "href": "sections/B02_Elect_Potencia.html",
+    "title": "Etapa de Potencia",
+    "section": "",
+    "text": "Etapa de Adquisicion\nEl microcontrolador STM32 hace uso de una señal que es proporcional a la sinusoide de tension de 220Vrms. El circuito que transforma esta sinusoide en una señal cuadrada TTL es el siguiente:\n\n\n\n\n\nEsta etapa requiere de tres resistencias de \\(150k\\Omega\\). Valor necesario para limitar la caida de tension que cae en el optoacoplador. La salida del mismo sera simplemente un pulso TTL conectado directo al pin del microcontrolador, tal como se ve en la imagen.\n\n\n\n\n Volver arriba",
+    "crumbs": [
+      "Home",
+      "**Electronica**",
+      "Etapa de Potencia"
+    ]
+  },
+  {
+    "objectID": "sections/A02_Requisitos.html",
+    "href": "sections/A02_Requisitos.html",
+    "title": "Requisitos",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\n\n\n\n\n Volver arriba",
+    "crumbs": [
+      "Home",
+      "**Introduccion**",
+      "Requisitos"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "WaveSyncTrigger",
+    "section": "",
+    "text": "Introduccion\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRequisitos\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSTM32\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nEtapa de Potencia\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo hay resultados\n\n Volver arriba"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Acerca",
+    "section": "",
+    "text": "Integrantes del Grupo:\nHerrera, Christian Yoel\nIriart, Ignacio Agustin\nTorres, Adrian Edimerk\n\n\n Volver arriba"
+  },
+  {
+    "objectID": "sections/A01_Introduccion.html",
+    "href": "sections/A01_Introduccion.html",
+    "title": "Introduccion",
+    "section": "",
+    "text": "El proyecto titulado como SyncWaveTrigger\n\n\n\n Volver arriba",
+    "crumbs": [
+      "Home",
+      "**Introduccion**",
+      "Introduccion"
+    ]
+  },
+  {
+    "objectID": "sections/B01_STM32.html",
+    "href": "sections/B01_STM32.html",
+    "title": "STM32",
+    "section": "",
+    "text": "Configuracion de los Pines GPIO\nPara el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido como “BluePill”. Esto fue asi porque el mismo es capaz de correr el clock a 72MHz.\nLa configuracion de los pines es la siguiente:\n\n\n\n\n\n\n\nConfiguracion de los Relojs\n\n\n\n\n\n\n\n\n\n Volver arriba",
+    "crumbs": [
+      "Home",
+      "**Electronica**",
+      "STM32"
+    ]
+  }
+]
