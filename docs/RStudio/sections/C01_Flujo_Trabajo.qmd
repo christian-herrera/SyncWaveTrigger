@@ -1,0 +1,54 @@
+---
+title: "Manejo del Dispositivo"
+image: "../images/wallpaper_software.jpg"
+---
+
+El prototipo sera ubicado dentro de una caja ignífuga siendo visible para el operario el LCD y el encoder rotativo. El resto de componentes estará dentro de la caja.
+
+# Menu del LCD
+
+En base a los requisitos solicitados se diseño un menú que sea simple para el operario, con el fin de que no existan confusiones con los tiempos que el operario debe configurar.
+
+Para describir este apartado se presenta la siguiente ilustración donde en cada pantalla, la unica forma de moverse a otra es a traves del encoder rotativo, ya sea presionandolo o girando el mismo.
+
+![](/images/Flujo_menus_lcd.png){fig-align="center"}
+
+# Uso de la App
+
+Para brindar una seguridad extra al prototipo, se pretende diseñar una aplicación para Android que permita modificar los valores de los tiempos y ademas iniciar o detener la secuencia de disparo. De igual forma también poder encender o apagar los contactores a distancia.
+
+Las pantallas de la aplicación son las siguientes:
+
+![](/images/Pantallas_App.png){fig-align="center" width="70%"}
+
+## Pantalla: Parámetros
+
+En esta pantalla se tiene tres campos para llenar los valores de los retardos. Luego de completados se podrá presionar el botón **Cargar Valores** para enviarlos al STM32. En caso de que alguno de los campos este vacío se mostrara una alerta y no se enviara ningún dato hasta que sea completado correctamente.
+
+Por otra parte, es posible pedir los valores que tiene configurados el STM32, al presionar el botón **Leer Valores** se enviara un pedido y la respuesta contiene los tres valores correspondientes.
+
+Por ultimo, la selección de unidades permite que que el valor ingresado sea en *microsegundos*, *milisegundos* o *grados electricos*, con lo cual al presionarse el boton **Cargar Valores** se pasara automaticamente a la unidad de *microsegundos*.
+
+## Pantalla: Modo Automático
+
+Esta pantalla simplemente mostrara los valores leídos la ultima vez que se presiono el botón **Leer Valores** de la pantalla "Parámetros", esto con el fin de tener a la vista los valores que se utilizara el STM32 al momento de ejecutar el proceso.
+
+Se sitúan dos botones debajo de estos campos, el primero es **Iniciar Proceso** el cual permite iniciar la secuencia de detección de cruce por cero y en función de los retardos configurados, manipular las salidas digitales.
+
+El otro botón es **Detener**, el cual permite que una vez realizadas las maniobras de los contactores, al presionar el botón se finalizara el bucle en el que queda el STM32 y volverá al menú principal.
+
+## Pantalla: Modo Manual
+
+Finalmente, en esta pantalla se dispone de cuatro botones, y tal como se ve en la imagen le permitirá al operario encender manualmente las salidas digitales correspondientes a los contactores, que para dar algún nombre, se los llamo **Q1** y **Q2**.
+
+# Integridad de la Comunicacion
+
+Cada comando que se requiera transmitir sera enviado con un carácter de inicio `#` y un carácter de cierre `&` con el fin de conocer en todo momento si la cadena de caracteres fue correctamente enviada o no.
+
+El flujo de datos inicia con la aplicación para Android, el comando a enviar consta de dos dígitos de identificación, seguido los valores de los retardos (si es que corresponde) y finalmente se empaqueta con el carácter de inicio y el carácter de cierre. La aplicación envía este comando y se queda a la espera de una respuesta, en este punto puede ocurrir una de las siguientes tres opciones.
+
+1.  No se recibe respuesta, en este caso se mostrara una alerta en la aplicación indicando el error.
+2.  Se recibe una respuesta incompleta o no valida, de igual forma se muestra un mensaje de error.
+3.  Se recibe una respuesta acorde a lo que se envío, ya sea acuse de recibido o la respuesta con los valores solicitados. En función del comando se realizara las tareas correspondientes.
+
+Por otra parte, en el microcontrolador se trabaja con las interrupciones para la comunicación serial, logrando así captar todo el comando sin importar en que esta trabajando el mismo. Solamente se inhabilitan estas interrupciones cuando se entra en la rutina de disparo por cruce por cero ya que en ese momento se requiere priorizar tal proceso y no la comunicación con la aplicación.

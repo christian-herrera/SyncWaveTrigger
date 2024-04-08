@@ -29,6 +29,10 @@ website:
         contents:
           - sections/B01_STM32.qmd
           - sections/B02_Elect_Potencia.qmd
+      - text: "---"
+      - section: "**Software**"
+        contents:
+          - sections/C01_Flujo_Trabajo.qmd
 
 
 format:

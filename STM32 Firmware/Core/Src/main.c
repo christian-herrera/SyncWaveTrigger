@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "LCD/LCD.h"
 #include "Configuraciones.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,6 +47,10 @@ typedef enum {
 	EDIT_CONFIG_LOGIC_OUT2,
 	EXIT
 } var_menu;
+
+typedef enum {
+	CMD_IDLE = -1, CMD_READING, CMD_READY
+} var_cmd_it;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -62,6 +67,8 @@ typedef enum {
 /* Private variables ---------------------------------------------------------*/
 TIM_HandleTypeDef htim1;
 
+UART_HandleTypeDef huart1;
+
 /* USER CODE BEGIN PV */
 void delay_us(uint32_t us);
 void switchToMenu(var_menu new);
@@ -71,14 +78,20 @@ int8_t readButton();
 volatile var_menu menu = HOME;
 type_data_t1 modeT1;
 uint8_t logicaQ1 = 1, logicaQ2 = 1;
-int16_t T1, T2, T3;
-int16_t T1_lcd;
+uint16_t T1, T2, T3;
+uint16_t T1_lcd;
+
+char buff_tx[50], buff_rx[50], buff_temp[10];
+char charRead;
+uint8_t buff_index;
+volatile var_cmd_it cmdStatus = CMD_IDLE;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM1_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -117,6 +130,7 @@ int main(void) {
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_TIM1_Init();
+	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
 	//Apago las interrupciones
 	HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
@@ -139,6 +153,8 @@ int main(void) {
 	T2 = 0;
 	T3 = 0;
 	modeT1 = T1_MS;
+
+	HAL_UART_Receive_IT(&huart1, (uint8_t*) &charRead, 1);
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -147,6 +163,86 @@ int main(void) {
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+
+		//************************************************************************/
+		/* 			LEE LOS COMANDOS EN LA ESTRUCTURA CORRECTA         		     */
+		/*************************************************************************/
+		if (cmdStatus == CMD_READY) {
+			//Deshabilito las interrupciones
+			HAL_UART_AbortReceive_IT(&huart1);
+
+			/*-------------------------------------------------------------------*/
+			if (strncmp(buff_rx, "#01&", 4) == 0) {
+				sprintf(buff_tx, "#OK&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#10&", 4) == 0) {							//#10& (Devuelvo los tiempos)
+				sprintf(buff_tx, "#10$%05d%05d%05d&", T1_lcd, T2, T3);
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#11$", 4) == 0 && strlen(buff_rx) == 20) {	//$11& (Recibo los tiempos de la app)
+				//T1
+				strncpy(buff_temp, buff_rx + 4, 5);
+				buff_temp[5] = '\0';
+				sscanf(buff_temp, "%hd", &T1_lcd);
+				//T2
+				strncpy(buff_temp, buff_rx + 9, 5);
+				buff_temp[5] = '\0';
+				sscanf(buff_temp, "%hd", &T2);
+				//T3
+				strncpy(buff_temp, buff_rx + 14, 5);
+				buff_temp[5] = '\0';
+				sscanf(buff_temp, "%hd", &T3);
+
+				//Respuesta
+				sprintf(buff_tx, "#11&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+
+				printNewValuesBT(1);
+				HAL_Delay(2000);
+				switchToMenu(menu);
+			} else if (strncmp(buff_rx, "#20&", 4) == 0) {
+				OUT1_ON(logicaQ1);
+				sprintf(buff_tx, "#20&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#21&", 4) == 0) {
+				OUT1_OFF(logicaQ1);
+				sprintf(buff_tx, "#21&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#22&", 4) == 0) {
+				OUT2_ON(logicaQ2);
+				sprintf(buff_tx, "#22&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#23&", 4) == 0) {
+				OUT2_OFF(logicaQ2);
+				sprintf(buff_tx, "#23&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+			} else if (strncmp(buff_rx, "#50&", 4) == 0) {
+				sprintf(buff_tx, "#50&");
+				HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+
+				OUT1_OFF(logicaQ1);
+				OUT2_OFF(logicaQ2);
+				switchToMenu(RUN);
+
+				/************************************************************************/
+				/*                      PREPARACION PARA DISPARO                        */
+				/************************************************************************/
+				T1 = T1_lcd;
+				if (T1_lcd < MIN_T1_TO_ADD_20MS)
+					T1 += 20000;
+
+				__HAL_GPIO_EXTI_CLEAR_IT(SIG_INPUT_Pin); //Limpio el flag de la interrupcion
+				HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);	//Habilito la interrupcion
+				/************************************************************************/
+			}
+
+
+			/*-------------------------------------------------------------------*/
+			cmdStatus = CMD_IDLE;
+			//Habilito nuevamente las interrupciones
+			HAL_UART_Receive_IT(&huart1, (uint8_t*) &charRead, 1);
+		}
+		/*************************************************************************/
+
 		encRead = readEncoder();
 		//HAL_Delay(1);
 
@@ -233,8 +329,7 @@ int main(void) {
 		case SELECT_T2: //======================================================================== SELECT_T2
 			if (encRead == 1) {
 				switchToMenu(SELECT_T3);
-			}
-			else if (encRead == -1) {
+			} else if (encRead == -1) {
 				switchToMenu(SELECT_T1);
 			}
 
@@ -265,19 +360,16 @@ int main(void) {
 				if (modeT1 == T1_US) { //[us]  -->  [ms]
 					modeT1 = T1_MS;
 					T1_lcd = (uint16_t) (T1_lcd / 1000.0);
-				}
-				else if (modeT1 == T1_MS) {  //[ms]  -->  [grados]
+				} else if (modeT1 == T1_MS) {  //[ms]  -->  [grados]
 					modeT1 = T1_GRADOS;
 					T1_lcd = (uint16_t) (T1_lcd * 360.0 / 20.0);
 				}
 				printEditT1Unit(1, T1_lcd, modeT1);
-			}
-			else if (encRead == -1) {
+			} else if (encRead == -1) {
 				if (modeT1 == T1_GRADOS) {  //[grados]  -->  [ms]
 					modeT1 = T1_MS;
 					T1_lcd = (uint16_t) (T1_lcd * 20.0 / 360.0);
-				}
-				else if (modeT1 == T1_MS) {  //[ms]  -->  [us]
+				} else if (modeT1 == T1_MS) {  //[ms]  -->  [us]
 					modeT1 = T1_US;
 					T1_lcd = (uint16_t) (T1_lcd * 1000.0);
 				}
@@ -292,8 +384,7 @@ int main(void) {
 		case SELECT_T3: //======================================================================== SELECT_T3
 			if (encRead == 1) {
 				switchToMenu(PRE_RUN);
-			}
-			else if (encRead == -1) {
+			} else if (encRead == -1) {
 				switchToMenu(SELECT_T2);
 			}
 
@@ -320,8 +411,7 @@ int main(void) {
 		case PRE_RUN: //========================================================================== PRE_RUN (Iniciar?)
 			if (encRead == -1) {
 				switchToMenu(SELECT_T3);
-			}
-			else if (encRead == 1) {
+			} else if (encRead == 1) {
 				switchToMenu(CONFIG);
 			}
 
@@ -345,9 +435,28 @@ int main(void) {
 
 		case TRIGGERED: //======================================================================== TRIGGERED
 			printTriggered();
-			while (!readButton()) {
+
+			uint8_t fin = 0;
+			while (!readButton() && fin != 1) {
 				HAL_Delay(1);
+
+				//Verifico si recibo el comando para finalizar por Bluetooth
+				if (cmdStatus == CMD_READY) {
+					//Deshabilito las interrupciones
+					HAL_UART_AbortReceive_IT(&huart1);
+
+					if (strncmp(buff_rx, "#51&", 4) == 0) {
+						sprintf(buff_tx, "#51&");
+						HAL_UART_Transmit_IT(&huart1, (uint8_t*) buff_tx, strlen(buff_tx));
+						fin = 1;
+					}
+
+					cmdStatus = CMD_IDLE;
+					//Habilito nuevamente las interrupciones
+					HAL_UART_Receive_IT(&huart1, (uint8_t*) &charRead, 1);
+				}
 			}
+
 			OUT1_OFF(logicaQ1);
 			OUT2_OFF(logicaQ2);
 			switchToMenu(HOME);
@@ -377,8 +486,7 @@ int main(void) {
 			if (logicaQ1 && encRead == -1) {
 				logicaQ1 = 0;
 				printEditConfigLogT1(1, logicaQ1);
-			}
-			else if (!logicaQ1 && encRead == 1) {
+			} else if (!logicaQ1 && encRead == 1) {
 				logicaQ1 = 1;
 				printEditConfigLogT1(1, logicaQ1);
 			}
@@ -392,8 +500,7 @@ int main(void) {
 		case CONFIG_LOGIC_OUT2: //================================================================ CONFIG_LOGIC_T2
 			if (encRead == -1) {
 				switchToMenu(CONFIG_LOGIC_OUT1);
-			}
-			else if (encRead == 1) {
+			} else if (encRead == 1) {
 				switchToMenu(EXIT);
 			}
 
@@ -406,8 +513,7 @@ int main(void) {
 			if (logicaQ2 && encRead == -1) {
 				logicaQ2 = 0;
 				printEditConfigLogT2(1, logicaQ2);
-			}
-			else if (!logicaQ2 && encRead == 1) {
+			} else if (!logicaQ2 && encRead == 1) {
 				logicaQ2 = 1;
 				printEditConfigLogT2(1, logicaQ2);
 			}
@@ -459,8 +565,7 @@ void SystemClock_Config(void) {
 
 	/** Initializes the CPU, AHB and APB buses clocks
 	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -504,13 +609,43 @@ static void MX_TIM1_Init(void) {
 	}
 	sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
 	sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-	if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig)
-			!= HAL_OK) {
+	if (HAL_TIMEx_MasterConfigSynchronization(&htim1, &sMasterConfig) != HAL_OK) {
 		Error_Handler();
 	}
 	/* USER CODE BEGIN TIM1_Init 2 */
 
 	/* USER CODE END TIM1_Init 2 */
+
+}
+
+/**
+ * @brief USART1 Initialization Function
+ * @param None
+ * @retval None
+ */
+static void MX_USART1_UART_Init(void) {
+
+	/* USER CODE BEGIN USART1_Init 0 */
+
+	/* USER CODE END USART1_Init 0 */
+
+	/* USER CODE BEGIN USART1_Init 1 */
+
+	/* USER CODE END USART1_Init 1 */
+	huart1.Instance = USART1;
+	huart1.Init.BaudRate = 115200;
+	huart1.Init.WordLength = UART_WORDLENGTH_8B;
+	huart1.Init.StopBits = UART_STOPBITS_1;
+	huart1.Init.Parity = UART_PARITY_NONE;
+	huart1.Init.Mode = UART_MODE_TX_RX;
+	huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+	if (HAL_UART_Init(&huart1) != HAL_OK) {
+		Error_Handler();
+	}
+	/* USER CODE BEGIN USART1_Init 2 */
+
+	/* USER CODE END USART1_Init 2 */
 
 }
 
@@ -531,16 +666,14 @@ static void MX_GPIO_Init(void) {
 
 	/*Configure GPIO pin Output Level */
 	HAL_GPIO_WritePin(GPIOA,
-			LCD_RS_Pin | LCD_E_Pin | LCD_DB4_Pin | LCD_DB5_Pin | LCD_DB6_Pin
-					| LCD_DB7_Pin, GPIO_PIN_RESET);
+	LCD_RS_Pin | LCD_E_Pin | LCD_DB4_Pin | LCD_DB5_Pin | LCD_DB6_Pin | LCD_DB7_Pin, GPIO_PIN_RESET);
 
 	/*Configure GPIO pin Output Level */
 	HAL_GPIO_WritePin(GPIOB, OUT_T1_Pin | OUT_T2_Pin, GPIO_PIN_RESET);
 
 	/*Configure GPIO pins : LCD_RS_Pin LCD_E_Pin LCD_DB4_Pin LCD_DB5_Pin
 	 LCD_DB6_Pin LCD_DB7_Pin */
-	GPIO_InitStruct.Pin = LCD_RS_Pin | LCD_E_Pin | LCD_DB4_Pin | LCD_DB5_Pin
-			| LCD_DB6_Pin | LCD_DB7_Pin;
+	GPIO_InitStruct.Pin = LCD_RS_Pin | LCD_E_Pin | LCD_DB4_Pin | LCD_DB5_Pin | LCD_DB6_Pin | LCD_DB7_Pin;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -581,6 +714,27 @@ static void MX_GPIO_Init(void) {
 
 /* USER CODE BEGIN 4 */
 /************************************************************************/
+/*       	INTERRUPCION PARA RECEPCION DE DATOS POR USART		        */
+/************************************************************************/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	if (charRead == '#' && (cmdStatus == CMD_IDLE || cmdStatus == CMD_READING)) {
+		buff_index = 0;
+		buff_rx[0] = charRead;
+		buff_index++;
+		cmdStatus = CMD_READING;
+	} else if (charRead == '&' && cmdStatus == CMD_READING) {
+		buff_rx[buff_index] = charRead;
+		buff_rx[buff_index + 1] = '\0';
+		cmdStatus = CMD_READY;
+	} else if (cmdStatus == CMD_READING) {
+		buff_rx[buff_index] = charRead;
+		buff_index++;
+	}
+
+	HAL_UART_Receive_IT(&huart1, (uint8_t*) &charRead, 1);
+}
+
+/************************************************************************/
 /*     					INTERRUPCION DEL CRUCE POR CERO			        */
 /************************************************************************/
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
@@ -598,20 +752,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if (T3 == 0) {
 		HAL_Delay(T2);
 		OUT1_OFF(logicaQ1);
-	}
-	else if (T3 < T2) {
+	} else if (T3 < T2) {
 		HAL_Delay(T3);
 		OUT2_ON(logicaQ2);
 		HAL_Delay(T2 - T3);
 		OUT1_OFF(logicaQ1);
-	}
-	else if (T3 > T2) {
+	} else if (T3 > T2) {
 		HAL_Delay(T2);
 		OUT1_OFF(logicaQ1);
 		HAL_Delay(T3 - T2);
 		OUT2_ON(logicaQ2);
-	}
-	else {
+	} else {
 		HAL_Delay(T2);
 		OUT1_OFF(logicaQ1);
 		OUT2_ON(logicaQ2);
@@ -706,8 +857,7 @@ int8_t readEncoder() {
 		if (now_CLK == 0) {
 			if (now_DT == 0) {
 				result = INV_LOGICA_ENCODER ? 1 : -1;
-			}
-			else if (now_DT == 1) {
+			} else if (now_DT == 1) {
 				result = INV_LOGICA_ENCODER ? -1 : 1;
 			}
 		}
@@ -738,8 +888,7 @@ int8_t readButton() {
 				if (dt > MIN_MS_ENCODER_LT) {
 					result = -1;
 					break;
-				}
-				else if (dt < MAX_MS_ENCODER_ST) {
+				} else if (dt < MAX_MS_ENCODER_ST) {
 					result = 1;
 				}
 			}

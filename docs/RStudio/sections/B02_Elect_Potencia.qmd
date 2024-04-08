@@ -2,10 +2,24 @@
 title: "Etapa de Potencia"
 ---
 
-# Etapa de Adquisicion
+# Etapa de Adquisición
 
-El microcontrolador STM32 hace uso de una señal que es proporcional a la sinusoide de tension de 220Vrms. El circuito que transforma esta sinusoide en una señal cuadrada TTL es el siguiente:
+Como se menciono en la seccion [introduccion](A01_Introduccion.qmd), se requiere de una etapa que logre transformar una señal sinusoidal en alguna forma de onda que sea capaz de leer el microcontrolador, para lograr esto se utilizo el circuito de la figura:
 
 ![](/images/etapa_adquisicion.png){fig-align="center" width="50%"}
 
-Esta etapa requiere de tres resistencias de $150k\Omega$. Valor necesario para limitar la caida de tension que cae en el optoacoplador. La salida del mismo sera simplemente un pulso TTL conectado directo al pin del microcontrolador, tal como se ve en la imagen.
+Esta etapa requiere de tres resistencias de $150k\Omega$. Valor necesario para limitar la caída de tensión que cae en el optoacoplador. La salida del mismo sera simplemente un pulso TTL conectado directo al pin del microcontrolador, tal como se ve en la imagen.
+
+# Salidas de Potencia
+
+Ya que el operario debe tener la posibilidad de usar contactores con bobinas excitadas tanto por corriente alterna como por corriente continua, entonces se utilizara para la misma salida digital, los dos arreglos siguientes:
+
+Para bobinas de ***Corriente Continua***, se dispone de un MosFet de canal N:
+
+![](/images/Etapa_Mosfet.png){fig-align="center" width="40%"}
+
+Mientras que para bobinas de ***Corriente Alterna***, se dispone de un SCR controlado por un optoacoplador para garantizar la aislación con el microcontrolador:
+
+![](/images/Etapa_Triac.png){fig-align="center" width="45%"}
+
+Hacer uso de los dos sistemas permite que el operario opte por conectar la bobina de su elección en los bornes correspondiente para tal bobina.

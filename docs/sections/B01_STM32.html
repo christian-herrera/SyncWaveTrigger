@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -168,6 +197,24 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text"><strong>Software</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sections/C01_Flujo_Trabajo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manejo del Dispositivo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -178,8 +225,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">En esta página</h2>
    
   <ul>
-  <li><a href="#configuracion-de-los-pines-gpio" id="toc-configuracion-de-los-pines-gpio" class="nav-link active" data-scroll-target="#configuracion-de-los-pines-gpio">Configuracion de los Pines GPIO</a></li>
-  <li><a href="#configuracion-de-los-relojs" id="toc-configuracion-de-los-relojs" class="nav-link" data-scroll-target="#configuracion-de-los-relojs">Configuracion de los Relojs</a></li>
+  <li><a href="#configuración-de-los-pines-gpio" id="toc-configuración-de-los-pines-gpio" class="nav-link active" data-scroll-target="#configuración-de-los-pines-gpio">Configuración de los Pines GPIO</a></li>
+  <li><a href="#configuración-de-los-relojes" id="toc-configuración-de-los-relojes" class="nav-link" data-scroll-target="#configuración-de-los-relojes">Configuración de los Relojes</a></li>
   </ul>
 </nav>
     </div>
@@ -205,18 +252,29 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="configuracion-de-los-pines-gpio" class="level1">
-<h1>Configuracion de los Pines GPIO</h1>
-<p>Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido como “BluePill”. Esto fue asi porque el mismo es capaz de correr el clock a 72MHz.</p>
-<p>La configuracion de los pines es la siguiente:</p>
+<p>Para el desarrollo del proyecto se realizo algunas pruebas con el microcontrolador AVR en cuanto a la velocidad de respuesta del mismo pero resulto ser insuficiente para procesar la señal TTL y efectuar el cierre del contactor.</p>
+<p>Por este motivo se utilizo el conocido STM32, mas conocido como “BluePill”. Esto fue así porque el mismo es capaz de correr el clock a 72MHz.</p>
+<section id="configuración-de-los-pines-gpio" class="level1">
+<h1>Configuración de los Pines GPIO</h1>
+<p>El microcontrolador se configuró para las siguientes funciones:</p>
+<ul>
+<li><p>2 GPIOs para el Reloj Externo</p></li>
+<li><p>9 GPIOs para el LCD</p></li>
+<li><p>2 GPIOs para brindar comunicación Serial con el HC-05</p></li>
+<li><p>2 GPIOs para las salidas de potencia</p></li>
+<li><p>1 GPIO para la Señal TTL</p></li>
+</ul>
+<p>Finalmente, la configuración física de estos pines en el microcontrolador sera la siguiente:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="..\images/stm32_pinout.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
 </figure>
 </div>
 </section>
-<section id="configuracion-de-los-relojs" class="level1">
-<h1>Configuracion de los Relojs</h1>
+<section id="configuración-de-los-relojes" class="level1">
+<h1>Configuración de los Relojes</h1>
+<p>Como se menciono mas arriba, el clock externo es un cristal de <span class="math inline">\(8MHz\)</span>, con lo cual, al usarse los divisores de frecuencia se logra obtener los <span class="math inline">\(72MHz\)</span>. Esto es lo que se requiere para lograr los retardos de algunos <span class="math inline">\(\mu s\)</span>.</p>
+<p>La siguiente imagen ilustra los parámetros configurados en el software STM32CubeIde.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="..\images/stm32_clocks.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>

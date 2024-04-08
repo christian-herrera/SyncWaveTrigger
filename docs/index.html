@@ -227,6 +227,24 @@ window.Quarto = {
 </li>
       </ul>
   </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text"><strong>Software</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sections/C01_Flujo_Trabajo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manejo del Dispositivo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -247,16 +265,16 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712119122837" data-listing-reading-time-sort="1" data-listing-word-count-sort="6">
+<div class="g-col-1" data-index="0" data-listing-file-modified-sort="1712535669901" data-listing-reading-time-sort="3" data-listing-word-count-sort="530">
 <a href="./sections/A01_Introduccion.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
+<p class="card-img-top"><img src="images\esquema_general.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Introduccion
 </h5>
 <div class="card-text listing-description">
-El proyecto titulado como <em>SyncWaveTrigger</em>
+El proyecto titulado como <em>SyncWaveTrigger</em> apunta al control de dos contactores para lograr la apertura y cierre sincronizados con la señal de red estándar (220𝑉 50𝐻𝑧). El…
 </div>
 <div class="card-attribution card-text-small start">
 <div class="listing-author">
@@ -267,16 +285,18 @@ El proyecto titulado como <em>SyncWaveTrigger</em>
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1712119123456" data-listing-reading-time-sort="1" data-listing-word-count-sort="14">
+<div class="g-col-1" data-index="1" data-listing-file-modified-sort="1712547930092" data-listing-reading-time-sort="2" data-listing-word-count-sort="368">
 <a href="./sections/A02_Requisitos.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
-<div class="listing-item-img-placeholder card-img-top" style="height: 150px;">&nbsp;</div>
+<p class="card-img-top">
+<img src="./images/wallpaper_ic.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
 Requisitos
 </h5>
 <div class="card-text listing-description">
-This is a Quarto website.
+El proyecto, al finalizarse debera ser capaz de cumplir con los siguientes items:
 </div>
 <div class="card-attribution card-text-small start">
 <div class="listing-author">
@@ -287,7 +307,7 @@ This is a Quarto website.
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1712121073878" data-listing-reading-time-sort="1" data-listing-word-count-sort="41">
+<div class="g-col-1" data-index="2" data-listing-file-modified-sort="1712536150308" data-listing-reading-time-sort="1" data-listing-word-count-sort="180">
 <a href="./sections/B01_STM32.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="images\stm32_pinout.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -296,7 +316,7 @@ This is a Quarto website.
 STM32
 </h5>
 <div class="card-text listing-description">
-Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido como “BluePill”. Esto fue asi porque el mismo es capaz de correr el clock a 72MHz.
+Para el desarrollo del proyecto se realizo algunas pruebas con el microcontrolador AVR en cuanto a la velocidad de respuesta del mismo pero resulto ser insuficiente para…
 </div>
 <div class="card-attribution card-text-small start">
 <div class="listing-author">
@@ -307,7 +327,7 @@ Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido com
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1712122223890" data-listing-reading-time-sort="1" data-listing-word-count-sort="75">
+<div class="g-col-1" data-index="3" data-listing-file-modified-sort="1712537960507" data-listing-reading-time-sort="1" data-listing-word-count-sort="179">
 <a href="./sections/B02_Elect_Potencia.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top"><img src="images\etapa_adquisicion.png" style="height: 150px;"  class="thumbnail-image card-img"/></p>
@@ -316,7 +336,29 @@ Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido com
 Etapa de Potencia
 </h5>
 <div class="card-text listing-description">
-El microcontrolador STM32 hace uso de una señal que es proporcional a la sinusoide de tension de 220Vrms. El circuito que transforma esta sinusoide en una señal cuadrada TTL…
+Como se menciono en la seccion introduccion, se requiere de una etapa que logre transformar una señal sinusoidal en alguna forma de onda que sea capaz de leer el…
+</div>
+<div class="card-attribution card-text-small start">
+<div class="listing-author">
+
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-listing-file-modified-sort="1712547945983" data-listing-reading-time-sort="4" data-listing-word-count-sort="662">
+<a href="./sections/C01_Flujo_Trabajo.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./images/wallpaper_software.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Manejo del Dispositivo
+</h5>
+<div class="card-text listing-description">
+El prototipo sera ubicado dentro de una caja ignífuga siendo visible para el operario el LCD y el encoder rotativo. El resto de componentes estará dentro de la caja.
 </div>
 <div class="card-attribution card-text-small start">
 <div class="listing-author">

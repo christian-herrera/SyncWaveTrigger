@@ -2,14 +2,32 @@
 title: "STM32"
 ---
 
-# Configuracion de los Pines GPIO
+Para el desarrollo del proyecto se realizo algunas pruebas con el microcontrolador AVR en cuanto a la velocidad de respuesta del mismo pero resulto ser insuficiente para procesar la señal TTL y efectuar el cierre del contactor.
 
-Para el desarrollo del proyecto se utilizo el famoso STM32, tambien conocido como "BluePill". Esto fue asi porque el mismo es capaz de correr el clock a 72MHz.
+Por este motivo se utilizo el conocido STM32, mas conocido como "BluePill". Esto fue así porque el mismo es capaz de correr el clock a 72MHz.
 
-La configuracion de los pines es la siguiente:
+# Configuración de los Pines GPIO
+
+El microcontrolador se configuró para las siguientes funciones:
+
+-   2 GPIOs para el Reloj Externo
+
+-   9 GPIOs para el LCD
+
+-   2 GPIOs para brindar comunicación Serial con el HC-05
+
+-   2 GPIOs para las salidas de potencia
+
+-   1 GPIO para la Señal TTL
+
+Finalmente, la configuración física de estos pines en el microcontrolador sera la siguiente:
 
 ![](/images/stm32_pinout.png){fig-align="center" width="50%"}
 
-# Configuracion de los Relojs
+# Configuración de los Relojes
+
+Como se menciono mas arriba, el clock externo es un cristal de $8MHz$, con lo cual, al usarse los divisores de frecuencia se logra obtener los $72MHz$. Esto es lo que se requiere para lograr los retardos de algunos $\mu s$.
+
+La siguiente imagen ilustra los parámetros configurados en el software STM32CubeIde.
 
 ![](/images/stm32_clocks.png){fig-align="center" width="80%"}

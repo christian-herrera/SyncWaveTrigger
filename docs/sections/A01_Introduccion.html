@@ -168,13 +168,39 @@ ul.task-list li input[type="checkbox"] {
 </li>
       </ul>
   </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text"><strong>Software</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../sections/C01_Flujo_Trabajo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manejo del Dispositivo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">En esta página</h2>
+   
+  <ul>
+  <li><a href="#sistema-de-control" id="toc-sistema-de-control" class="nav-link active" data-scroll-target="#sistema-de-control">Sistema de Control</a></li>
+  <li><a href="#etapa-de-detección-de-cero" id="toc-etapa-de-detección-de-cero" class="nav-link" data-scroll-target="#etapa-de-detección-de-cero">Etapa de Detección de Cero</a></li>
+  <li><a href="#etapa-de-potencia" id="toc-etapa-de-potencia" class="nav-link" data-scroll-target="#etapa-de-potencia">Etapa de Potencia</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -198,9 +224,34 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>El proyecto titulado como <em>SyncWaveTrigger</em></p>
+<p>El proyecto titulado como <em>SyncWaveTrigger</em> apunta al control de dos contactores para lograr la apertura y cierre sincronizados con la señal de red estándar (220𝑉 50𝐻𝑧). El mismo se utilizará para realizar ensayos más exactos de transformadores de tensión según los requisitos establecidos por la norma IEC 60076−11.</p>
+<p>Como se ve en la siguiente figura, nuestro proyecto incorpora una entrada para la señal de la red, que será leída por un microcontrolador programado para detectar cuando la señal cruce por cero y un actuador que se encargará de accionar un contactor que realiza la conexión, u otro contactor que realiza la desconexión del sistema en estudio, en nuestro caso, transformadores de tensión.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="..\images/esquema_general.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:35.0%"></p>
+</figure>
+</div>
+<p>El cliente, además, podrá interactuar con el microcontrolador y activar cuando desee la detección de cruce por cero; también, con fines educativos podrá fijar un retardo en el actuador de conexión de forma que pueda visualizar si lo desea como afecta el desfasaje de la señal a la corriente de inrush del transformador en estudio.</p>
+<section id="sistema-de-control" class="level1">
+<h1>Sistema de Control</h1>
+<p>El sistema de control se basa en el censado de un optoacoplador de los cruces por cero de la señal, así como del control de tiempo para accionar sobre los contactores. El operario tendrá la capacidad de configurar tanto localmente desde el dispositivo como de manera remota el momento a partir del cual se llevará a cabo la detección de cero de señal. Además, dispondrá de la libertad de ajustar el retardo tanto en la conexión como en la desconexión del circuito, por lo que se tendrá un control más exacto de los valores cresta de las corrientes de inrush del transformador en estudio.</p>
+</section>
+<section id="etapa-de-detección-de-cero" class="level1">
+<h1>Etapa de Detección de Cero</h1>
+<p>Para el censado de cruce por cero se diseñará un circuito que no presente retardos, y en caso de existir, que siempre sea el mismo con el fin de no inferir en el tiempo que el usuario selecciona. Para esto se utilizará un optoacoplador conectado directamente a la red eléctrica monofásica y haciendo uso de una resistencia en serie para limitar la corriente de este. Adicionalmente, se colocará un diodo en antiparalelo con el optoacoplador para garantizar que la alta tensión que cae en bornes del mismo no dañe el componente. Esto se puede ver la siguiente imagen generada en la simulacion efectuada con el Software LTSpice</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="..\images/Funcionamiento_Cruce_por_Cero.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:45.0%"></p>
+</figure>
+</div>
+<p>Como se ve en la imagen, en funcion de la sinusoide se obtiene una señal cuadrada de la misma frecuencia que la sinusoide. Con la ventaja de que la señal azul esta aislada de la red.</p>
+</section>
+<section id="etapa-de-potencia" class="level1">
+<h1>Etapa de Potencia</h1>
+<p>Con respecto a las salidas, como los ensayos requieren de valores altos de corrientes se decidió utilizar dos contactores, cada uno con especificaciones distintas. El contactor que logra energizar el circuito bajo prueba requiere únicamente soportar la corriente de arranque, una vez establecida la corriente de estado permanente, se requerirá desconectar el circuito, pero como esta misma tiene un valor alto (menor a la de arranque), por el simple motivo de resguardar la vida útil del mismo se utilizará un segundo contactor con bobina de apertura, equipo que soportara los desgastes provocados por los arcos eléctricos en los bornes de este. Siendo así el contactor de apertura distinto al contactor de cierre.</p>
 
 
+</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Volver arriba</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

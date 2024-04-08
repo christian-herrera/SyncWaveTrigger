@@ -61,8 +61,8 @@ all: main-build
 main-build: SyncWaveTrigger.elf secondary-outputs
 
 # Tool invocations
-SyncWaveTrigger.elf SyncWaveTrigger.map: $(OBJS) $(USER_OBJS) C:\Users\christian\Desktop\SyncWaveTrigger\STM32\ Firmware\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "SyncWaveTrigger.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\christian\Desktop\SyncWaveTrigger\STM32 Firmware\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SyncWaveTrigger.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+SyncWaveTrigger.elf SyncWaveTrigger.map: $(OBJS) $(USER_OBJS) C:\Users\christian\Desktop\WaveSyncTrigger\STM32\ Firmware\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "SyncWaveTrigger.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\christian\Desktop\WaveSyncTrigger\STM32 Firmware\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SyncWaveTrigger.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

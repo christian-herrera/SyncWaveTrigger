@@ -12,10 +12,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef enum {LCD_COMMAND, LCD_DATA} type_data_send;
+typedef enum {
+	LCD_COMMAND, LCD_DATA
+} type_data_send;
 
-typedef enum {T1_GRADOS, T1_US, T1_MS} type_data_t1;
-
+typedef enum {
+	T1_GRADOS, T1_US, T1_MS
+} type_data_t1;
 
 /************************************************************************/
 /*                         FUNCIONES PUBLICAS                           */
@@ -24,46 +27,36 @@ typedef enum {T1_GRADOS, T1_US, T1_MS} type_data_t1;
 //	Inicializa el LCD y los valores por defecto
 void LCD_Init();
 
-
 //	Limpia completamente el LCD
 void LCD_Clear();
-
 
 //	Posiciona el cursor en una coordenada (col, row)
 //	Parametros:
 //	--> [uint8_t] col:  Indice de la columna
 //	--> [uint8_t] row:  Indice de la fila
-void LCD_setCursor (uint8_t col, uint8_t row);
-
+void LCD_setCursor(uint8_t col, uint8_t row);
 
 //	Imprime un caracter en la posicion actual
 //	Parametros:
 //	--> [uint8_t] data:  Byte que se imprime
-void LCD_printChar (uint8_t data);
-
+void LCD_printChar(uint8_t data);
 
 //	Imprime una cadena de caracteres a partir de la posicion actual
 //	Parametros:
 //	--> [char *] str:  Inicio de la cadena
-void LCD_printString (char *str);
-
+void LCD_printString(char *str);
 
 //	Imprime un entero sin signo
 //	Parametros:
 //	--> [uint16_t] val:  Entero sin signo
 void LCD_printInt(uint16_t val);
 
-
 //	Imprime un Float
 //	Parametros:
 //	--> [float]		val			: Valor de Punto Flotante
 //	--> [int8_t]	min_width	: Tama�o minimo, completa con espacios
 //	--> [uint8_t]	dig			: Cantidad de digitos despues del punto decimal
-void LCD_printFloat(float val, char * data);
-
-
-
-
+void LCD_printFloat(float val, char *data);
 
 /************************************************************************/
 /*                      IMPRESION DE PANTALLAS                          */
@@ -84,15 +77,16 @@ void printTriggered();
 
 void printConfigEntrar(uint8_t clear);
 
-void printViewConfigT1(uint8_t clear, type_data_t1 mode);
-void printEditConfigT1(uint8_t clear, type_data_t1 mode);
+//void printViewConfigT1(uint8_t clear, type_data_t1 mode);
+//void printEditConfigT1(uint8_t clear, type_data_t1 mode);
 
 void printViewConfigLogT1(uint8_t clear, uint8_t logicaT);
 void printEditConfigLogT1(uint8_t clear, uint8_t logicaT);
 void printViewConfigLogT2(uint8_t clear, uint8_t logicaT);
 void printEditConfigLogT2(uint8_t clear, uint8_t logicaT);
 
-
 void printConfigVolver(uint8_t clear);
+
+void printNewValuesBT(uint8_t clear);
 
 #endif /* INC_LCD_LCD_H_ */

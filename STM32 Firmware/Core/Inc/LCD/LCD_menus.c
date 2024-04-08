@@ -296,8 +296,10 @@ void printPreRun(uint8_t clear, uint16_t T1, uint16_t T2, uint16_t T3){
 		LCD_printString("T2:   ");
 	else if(T2 < 1000)
 		LCD_printString("T2:  ");
-	else
+	else if(T2 < 10000)
 		LCD_printString("T2: ");
+	else
+		LCD_printString("T2:");
 
 	LCD_printInt(T2);
 	LCD_printString("ms");
@@ -310,8 +312,10 @@ void printPreRun(uint8_t clear, uint16_t T1, uint16_t T2, uint16_t T3){
 		LCD_printString("T3:   ");
 	else if(T3 < 1000)
 		LCD_printString("T3:  ");
-	else
+	else if(T3 < 10000)
 		LCD_printString("T3: ");
+	else
+		LCD_printString("T3:");
 
 	LCD_printInt(T3);
 	LCD_printString("ms");
@@ -323,7 +327,7 @@ void printPreRun(uint8_t clear, uint16_t T1, uint16_t T2, uint16_t T3){
 
 void printRunning(uint16_t T1, uint16_t T2, uint16_t T3){
 	LCD_Clear();
-	LCD_printString("ARMANDO EN   ...");
+	LCD_printString(">INICIANDO EN  ...");
 	LCD_setCursor(1, 2);
 
 	//Imprimo T1
@@ -371,7 +375,7 @@ void printRunning(uint16_t T1, uint16_t T2, uint16_t T3){
 	LCD_printString("  ms");
 
 	for(uint8_t t = 5; t > 0; t--){
-		LCD_setCursor(12, 0);
+		LCD_setCursor(14, 0);
 		LCD_printInt(t);
 		HAL_Delay(1000);
 	}
@@ -564,6 +568,21 @@ void printConfigEntrar(uint8_t clear){
 
 	LCD_setCursor(1, 2);
 	LCD_printString("Configuraciones");
+
+	DELAY_POST_PRINT;
+}
+
+void printNewValuesBT(uint8_t clear){
+	if(clear)
+		LCD_Clear();
+	else
+		LCD_setCursor(0,0);
+
+	LCD_setCursor(3, 1);
+	LCD_printString("VALORES NUEVOS");
+
+	LCD_setCursor(4,2);
+	LCD_printString("Cargados....");
 
 	DELAY_POST_PRINT;
 }

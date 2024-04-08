@@ -1,11 +1,27 @@
 ---
 title: "Requisitos"
+image: "../images/wallpaper_ic.jpg"
 ---
 
-This is a Quarto website.
+# Requisitos Generales
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+El proyecto, al finalizarse debera ser capaz de cumplir con los siguientes items:
 
-```{r}
-1 + 1
-```
+-   Control de contactores basado en detección de cero de señal de red.
+-   Sintonizar retardos en la acción de contactores.
+-   Sintonizar un retardo mínimo de un grado eléctrico.
+-   Apertura y cierre manual de los contactores.
+-   Apertura y cierra de modo automático de los contactores.
+-   Acceso manual a la acción de los contactores.
+-   Acceso manual a la configuración del dispositivo.
+-   Acceso remoto a la configuración del dispositivo.
+
+# Alcance
+
+El producto es un dispositivo de disparo sincronizado que le permite al operario ensayar ransformadores de tensión conforme a las recomendaciones generales de la norma IEC 60076. Además, le permite realizar ensayos de interruptores termomagnéticos y diferenciales; así también, como su utilización con propósitos educativos.
+
+El cliente cuenta con el dispositivo contenido dentro de una caja resistente que facilita su transporte, protegiéndolo de golpes y exposición durante el traslado a cualquier ubicación que el cliente desee, además de que facilita las posibilidades de almacenamiento del equipo. El sistema está diseñado para brindar comodidad al operario, permitiéndole realizar las configuraciones básicas de manera local. De esta manera el operario puede preestablecer los tiempos de acción de los contactores y dar inicio al ensayo directamente desde el equipo, lo que resulta especialmente útil cuando se quiere demostrar su funcionamiento a un grupo de alumnos.
+
+Además, el sistema incluye una aplicación móvil con el fin de aumentar accesibilidad al cliente. Esta aplicación no solo ofrece opciones de configuración básica del dispositivo, sino que también permite el disparo y cierre de forma manual, es decir, el operario puede activar los contactores desde la aplicación sin definir previamente los tiempos de acción de estos; sino que también brinda la posibilidad de conectar el dispositivo en lugares de acceso restringido y dar inicio al ensayo desde una cabina de control remota.
+
+El producto en su totalidad está compuesto por un dispositivo de control integrado en una caja de seguridad, de una aplicación móvil diseñada para mejorar la accesibilidad del operario y ofrecer una mayor funcionalidad, y se proporciona también un manual de usuario tanto en formato físico como dentro de la aplicación móvil.
