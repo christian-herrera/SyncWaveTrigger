@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>WaveSyncTrigger - Manejo del Dispositivo</title>
+<title>WaveSyncTrigger - Primer Version</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,7 +108,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/C01_Flujo_Trabajo.html"><strong>Software</strong></a></li><li class="breadcrumb-item"><a href="../sections/C01_Flujo_Trabajo.html">Manejo del Dispositivo</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/D01_Render_Preliminar.html"><strong>PCB</strong></a></li><li class="breadcrumb-item"><a href="../sections/D01_Render_Preliminar.html">Primer Version</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -179,7 +179,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sections/C01_Flujo_Trabajo.html" class="sidebar-item-text sidebar-link active">
+  <a href="../sections/C01_Flujo_Trabajo.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Manejo del Dispositivo</span></a>
   </div>
 </li>
@@ -197,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../sections/D01_Render_Preliminar.html" class="sidebar-item-text sidebar-link">
+  <a href="../sections/D01_Render_Preliminar.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Primer Version</span></a>
   </div>
 </li>
@@ -209,27 +209,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">En esta página</h2>
-   
-  <ul>
-  <li><a href="#menu-del-lcd" id="toc-menu-del-lcd" class="nav-link active" data-scroll-target="#menu-del-lcd">Menu del LCD</a></li>
-  <li><a href="#uso-de-la-app" id="toc-uso-de-la-app" class="nav-link" data-scroll-target="#uso-de-la-app">Uso de la App</a>
-  <ul class="collapse">
-  <li><a href="#pantalla-parámetros" id="toc-pantalla-parámetros" class="nav-link" data-scroll-target="#pantalla-parámetros">Pantalla: Parámetros</a></li>
-  <li><a href="#pantalla-modo-automático" id="toc-pantalla-modo-automático" class="nav-link" data-scroll-target="#pantalla-modo-automático">Pantalla: Modo Automático</a></li>
-  <li><a href="#pantalla-modo-manual" id="toc-pantalla-modo-manual" class="nav-link" data-scroll-target="#pantalla-modo-manual">Pantalla: Modo Manual</a></li>
-  </ul></li>
-  <li><a href="#integridad-de-la-comunicacion" id="toc-integridad-de-la-comunicacion" class="nav-link" data-scroll-target="#integridad-de-la-comunicacion">Integridad de la Comunicacion</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/C01_Flujo_Trabajo.html"><strong>Software</strong></a></li><li class="breadcrumb-item"><a href="../sections/C01_Flujo_Trabajo.html">Manejo del Dispositivo</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../sections/D01_Render_Preliminar.html"><strong>PCB</strong></a></li><li class="breadcrumb-item"><a href="../sections/D01_Render_Preliminar.html">Primer Version</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Manejo del Dispositivo</h1>
+<h1 class="title">Primer Version</h1>
 </div>
 
 
@@ -246,56 +233,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>El prototipo sera ubicado dentro de una caja ignífuga siendo visible para el operario el LCD y el encoder rotativo. El resto de componentes estará dentro de la caja.</p>
-<section id="menu-del-lcd" class="level1">
-<h1>Menu del LCD</h1>
-<p>En base a los requisitos solicitados se diseño un menú que sea simple para el operario, con el fin de que no existan confusiones con los tiempos que el operario debe configurar.</p>
-<p>Para describir este apartado se presenta la siguiente ilustración donde en cada pantalla, la unica forma de moverse a otra es a traves del encoder rotativo, ya sea presionandolo o girando el mismo.</p>
+<p>El diseño de la PCB se realizo con el Software <strong>Altium Designer</strong>, si bien en estas instancias es un prototipo, se adjuntan los renders de la primer versión diseñada.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="..\images/Flujo_menus_lcd.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+<p><img src="..\images/Render_1.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
 </figure>
 </div>
-</section>
-<section id="uso-de-la-app" class="level1">
-<h1>Uso de la App</h1>
-<p>Para brindar una seguridad extra al prototipo, se pretende diseñar una aplicación para Android que permita modificar los valores de los tiempos y ademas iniciar o detener la secuencia de disparo. De igual forma también poder encender o apagar los contactores a distancia.</p>
-<p>Las pantallas de la aplicación son las siguientes:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="..\images/Pantallas_App.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%"></p>
+<p><img src="..\images/Render_2.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
 </figure>
 </div>
-<section id="pantalla-parámetros" class="level2">
-<h2 class="anchored" data-anchor-id="pantalla-parámetros">Pantalla: Parámetros</h2>
-<p>En esta pantalla se tiene tres campos para llenar los valores de los retardos. Luego de completados se podrá presionar el botón <strong>Cargar Valores</strong> para enviarlos al STM32. En caso de que alguno de los campos este vacío se mostrara una alerta y no se enviara ningún dato hasta que sea completado correctamente.</p>
-<p>Por otra parte, es posible pedir los valores que tiene configurados el STM32, al presionar el botón <strong>Leer Valores</strong> se enviara un pedido y la respuesta contiene los tres valores correspondientes.</p>
-<p>Por ultimo, la selección de unidades permite que que el valor ingresado sea en <em>microsegundos</em>, <em>milisegundos</em> o <em>grados electricos</em>, con lo cual al presionarse el boton <strong>Cargar Valores</strong> se pasara automaticamente a la unidad de <em>microsegundos</em>.</p>
-</section>
-<section id="pantalla-modo-automático" class="level2">
-<h2 class="anchored" data-anchor-id="pantalla-modo-automático">Pantalla: Modo Automático</h2>
-<p>Esta pantalla simplemente mostrara los valores leídos la ultima vez que se presiono el botón <strong>Leer Valores</strong> de la pantalla “Parámetros”, esto con el fin de tener a la vista los valores que se utilizara el STM32 al momento de ejecutar el proceso.</p>
-<p>Se sitúan dos botones debajo de estos campos, el primero es <strong>Iniciar Proceso</strong> el cual permite iniciar la secuencia de detección de cruce por cero y en función de los retardos configurados, manipular las salidas digitales.</p>
-<p>El otro botón es <strong>Detener</strong>, el cual permite que una vez realizadas las maniobras de los contactores, al presionar el botón se finalizara el bucle en el que queda el STM32 y volverá al menú principal.</p>
-</section>
-<section id="pantalla-modo-manual" class="level2">
-<h2 class="anchored" data-anchor-id="pantalla-modo-manual">Pantalla: Modo Manual</h2>
-<p>Finalmente, en esta pantalla se dispone de cuatro botones, y tal como se ve en la imagen le permitirá al operario encender manualmente las salidas digitales correspondientes a los contactores, que para dar algún nombre, se los llamo <strong>Q1</strong> y <strong>Q2</strong>.</p>
-</section>
-</section>
-<section id="integridad-de-la-comunicacion" class="level1">
-<h1>Integridad de la Comunicacion</h1>
-<p>Cada comando que se requiera transmitir sera enviado con un carácter de inicio <code>#</code> y un carácter de cierre <code>&amp;</code> con el fin de conocer en todo momento si la cadena de caracteres fue correctamente enviada o no.</p>
-<p>El flujo de datos inicia con la aplicación para Android, el comando a enviar consta de dos dígitos de identificación, seguido los valores de los retardos (si es que corresponde) y finalmente se empaqueta con el carácter de inicio y el carácter de cierre. La aplicación envía este comando y se queda a la espera de una respuesta, en este punto puede ocurrir una de las siguientes tres opciones.</p>
-<ol type="1">
-<li>No se recibe respuesta, en este caso se mostrara una alerta en la aplicación indicando el error.</li>
-<li>Se recibe una respuesta incompleta o no valida, de igual forma se muestra un mensaje de error.</li>
-<li>Se recibe una respuesta acorde a lo que se envío, ya sea acuse de recibido o la respuesta con los valores solicitados. En función del comando se realizara las tareas correspondientes.</li>
-</ol>
-<p>Por otra parte, en el microcontrolador se trabaja con las interrupciones para la comunicación serial, logrando así captar todo el comando sin importar en que esta trabajando el mismo. Solamente se inhabilitan estas interrupciones cuando se entra en la rutina de disparo por cruce por cero ya que en ese momento se requiere priorizar tal proceso y no la comunicación con la aplicación.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="..\images/Render_3.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
 
 
-</section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Volver arriba</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

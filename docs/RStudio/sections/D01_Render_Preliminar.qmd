@@ -1,0 +1,12 @@
+---
+title: "Primer Version"
+image: "../images/wallpaper_pcb.jpg"
+---
+
+El diseño de la PCB se realizo con el Software **Altium Designer**, si bien en estas instancias es un prototipo, se adjuntan los renders de la primer versión diseñada.
+
+![](/images/Render_1.jpg){fig-align="center" width="80%"}
+
+![](/images/Render_2.jpg){fig-align="center" width="80%"}
+
+![](/images/Render_3.jpg){fig-align="center" width="80%"}

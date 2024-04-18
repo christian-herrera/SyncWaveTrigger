@@ -33,6 +33,10 @@ website:
       - section: "**Software**"
         contents:
           - sections/C01_Flujo_Trabajo.qmd
+      - text: "---"
+      - section: "**PCB**"
+        contents:
+          - sections/D01_Render_Preliminar.qmd
 
 
 format:

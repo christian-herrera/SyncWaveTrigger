@@ -7,6 +7,7 @@
 
 
 #include "LCD.h"
+#include "main.h"
 
 extern void delay_us (uint32_t us);
 
@@ -14,14 +15,14 @@ extern void delay_us (uint32_t us);
 /*            DEFINICIONES, VARIABLES Y FUNCIONES PRIVADAS              */
 /************************************************************************/
 /* Macros que permiten cambiar los estados de los pines */
-#define LCD_RS_HIGH HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_SET)
-#define LCD_RS_LOW	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET)
-#define LCD_E_HIGH	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET)
-#define LCD_E_LOW	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET)
-#define LCD_DB4(data) if(data) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_SET); else HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, GPIO_PIN_RESET)
-#define LCD_DB5(data) if(data) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET); else HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET)
-#define LCD_DB6(data) if(data) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); else HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET)
-#define LCD_DB7(data) if(data) HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_SET); else HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET)
+#define LCD_RS_HIGH HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET)
+#define LCD_RS_LOW	HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET)
+#define LCD_E_HIGH	HAL_GPIO_WritePin(LCD_E_GPIO_Port, LCD_E_Pin, GPIO_PIN_SET)
+#define LCD_E_LOW	HAL_GPIO_WritePin(LCD_E_GPIO_Port, LCD_E_Pin, GPIO_PIN_RESET)
+#define LCD_DB4(data) if(data) HAL_GPIO_WritePin(LCD_DB4_GPIO_Port, LCD_DB4_Pin, GPIO_PIN_SET); else HAL_GPIO_WritePin(LCD_DB4_GPIO_Port, LCD_DB4_Pin, GPIO_PIN_RESET)
+#define LCD_DB5(data) if(data) HAL_GPIO_WritePin(LCD_DB5_GPIO_Port, LCD_DB5_Pin, GPIO_PIN_SET); else HAL_GPIO_WritePin(LCD_DB5_GPIO_Port, LCD_DB5_Pin, GPIO_PIN_RESET)
+#define LCD_DB6(data) if(data) HAL_GPIO_WritePin(LCD_DB6_GPIO_Port, LCD_DB6_Pin, GPIO_PIN_SET); else HAL_GPIO_WritePin(LCD_DB6_GPIO_Port, LCD_DB6_Pin, GPIO_PIN_RESET)
+#define LCD_DB7(data) if(data) HAL_GPIO_WritePin(LCD_DB7_GPIO_Port, LCD_DB7_Pin, GPIO_PIN_SET); else HAL_GPIO_WritePin(LCD_DB7_GPIO_Port, LCD_DB7_Pin, GPIO_PIN_RESET)
 
 /* Mascaras para las diversos modos de funcionamientos */
 #define LCD_CMD_CLEAR		(1 << 0)
