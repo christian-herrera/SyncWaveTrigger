@@ -78,8 +78,8 @@ int8_t readButton();
 volatile var_menu menu = HOME;
 type_data_t1 modeT1;
 uint8_t logicaQ1 = 1, logicaQ2 = 1;
-uint16_t T1, T2, T3;
-uint16_t T1_lcd;
+int16_t T1, T2, T3;
+int16_t T1_lcd;
 
 char buff_tx[50], buff_rx[50], buff_temp[10];
 char charRead;
@@ -425,8 +425,10 @@ int main(void)
 				/*                      PREPARACION PARA DISPARO                        */
 				/************************************************************************/
 				T1 = T1_lcd;
-				if (T1_lcd < MIN_T1_TO_ADD_20MS)
+				if (T1_lcd < MIN_T1_TO_ADD_20MS && T1_lcd > 0)
 					T1 += 20000;
+
+				HAL_GPIO_WritePin(INT_ENABLED_GPIO_Port, INT_ENABLED_Pin, 0); //Led Built-In
 
 				__HAL_GPIO_EXTI_CLEAR_IT(SIG_INPUT_Pin); //Limpio el flag de la interrupcion
 				HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);	//Habilito la interrupcion
@@ -460,6 +462,7 @@ int main(void)
 
 			OUT1_OFF(logicaQ1);
 			OUT2_OFF(logicaQ2);
+			HAL_GPIO_WritePin(INT_ENABLED_GPIO_Port, INT_ENABLED_Pin, 1); //Led Built-In
 			switchToMenu(HOME);
 			break;
 
@@ -672,15 +675,26 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(INT_ENABLED_GPIO_Port, INT_ENABLED_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, LCD_DB7_Pin|LCD_DB6_Pin|LCD_DB5_Pin|LCD_DB4_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, OUT_T1_Pin|OUT_T2_Pin|LCD_E_Pin|LCD_RS_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : INT_ENABLED_Pin */
+  GPIO_InitStruct.Pin = INT_ENABLED_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(INT_ENABLED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LCD_DB7_Pin LCD_DB6_Pin LCD_DB5_Pin LCD_DB4_Pin */
   GPIO_InitStruct.Pin = LCD_DB7_Pin|LCD_DB6_Pin|LCD_DB5_Pin|LCD_DB4_Pin;
