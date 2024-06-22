@@ -37,6 +37,10 @@ website:
       - section: "**PCB**"
         contents:
           - sections/D01_Render_Preliminar.qmd
+      - text: "---"
+      - section: "**Aplicacion**"
+        contents:
+          - sections/E01_App.qmd
 
 
 format:

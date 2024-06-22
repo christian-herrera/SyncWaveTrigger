@@ -1,0 +1,8 @@
+---
+title: "Aplicacion para Android"
+image: "../images/wallpaper_phone.jpg"
+---
+
+Se diseño una Aplicacion para el sistema operativo Android con la finalidad de poder operar los valores de tiempos de forma remota. Se cuenta con conexion Bluetooth con el dispositivo por tal motivo la comunicacion no podra ser a mas de 15 o 20 metros de distancia.
+
+[Manual de Usuario](../files/Manual_APP.pdf)
